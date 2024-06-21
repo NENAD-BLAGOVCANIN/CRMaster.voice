@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 from transcriber import transcribe_audio
+import uuid
 
 app = Flask(__name__)
 CORS(app)
@@ -11,7 +12,10 @@ def transcribe():
 
     file = request.files['file']
 
-    file_path = "recording.webm"
+    random_uuid = uuid.uuid4()
+    file_extension = ".webm"
+
+    file_path = str(random_uuid) + file_extension
     file.save(file_path)
 
     transcription_result = transcribe_audio(file_path)
