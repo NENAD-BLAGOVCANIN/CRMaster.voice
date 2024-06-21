@@ -14,16 +14,20 @@ def hello_world():
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
     file = request.files['file']
+
     file_path = 'temp.wav'
     file.save(file_path)
 
+    print(file)
+
     transcription_result, status_code = transcribe_audio(file_path)
     
-    os.remove(file_path)
+    if os.path.exists(file_path):
+        os.remove(file_path)
     
     return jsonify(transcription_result), status_code
 
     
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(debug=True)

@@ -8,14 +8,19 @@ from vosk import Model, KaldiRecognizer
 model = Model("models/vosk-model-small-en-us-0.15")
 
 def convert_to_wav(input_file, output_file):
-    command = [
-        'ffmpeg',
-        '-i', input_file,
-        '-ar', '16000',  # Set the sample rate to 16000 Hz
-        '-ac', '1',      # Set the number of audio channels to 1 (mono)
-        output_file
-    ]
-    subprocess.run(command, check=True)
+    try:
+        command = [
+            'ffmpeg',
+            '-i', input_file,
+            '-ar', '16000',  # Set the sample rate to 16000 Hz
+            '-ac', '1',      # Set the number of audio channels to 1 (mono)
+            output_file
+        ]
+        print(f"Running command: {' '.join(command)}")
+        subprocess.run(command, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"ffmpeg error: {e}")
+        raise
 
 def transcribe_audio(file_path):
     converted_path = 'converted_temp.wav'
