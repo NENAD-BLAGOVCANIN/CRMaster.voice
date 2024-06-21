@@ -48,4 +48,8 @@ def transcribe_audio(file_path):
     transcription += final_result_json.get('text', '')
 
     wf.close()
+
+    if os.path.exists(converted_path):
+        os.remove(converted_path)
+
     return {'transcription': transcription}

@@ -19,6 +19,10 @@ def transcribe():
     file.save(file_path)
 
     transcription_result = transcribe_audio(file_path)
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
     return jsonify(transcription_result)
 
 if __name__ == '__main__':
