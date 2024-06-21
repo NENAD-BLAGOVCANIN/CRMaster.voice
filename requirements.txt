@@ -2,3 +2,4 @@ Flask==3.0.3
 Flask-Cors==4.0.1
 soundfile==0.12.1
 vosk==0.3.45
+pydub==0.25.1
