@@ -15,8 +15,7 @@ CORS(app)
 
 model = Model("models/vosk-model-small-en-us-0.15")
 
-def transcribe_audio(file_path):
-    
+def convert_to_wav(file_path):
     print(f"Converting file {file_path} to compliant WAV format")
     absolute_file_path = os.path.abspath(file_path)
     converted_path = absolute_file_path.replace(file_path.split('.')[-1], 'wav')
@@ -24,11 +23,12 @@ def transcribe_audio(file_path):
     command = f'ffmpeg -i "{absolute_file_path}" -ar 16000 -ac 1 -sample_fmt s16 "{converted_path}"'
     subprocess.run(command, shell=True, check=True)
 
-    # Open the WAV file
+    return converted_path
+
+def transcribe_audio(file_path):
+    
+    converted_path = convert_to_wav(file_path)
     wf = wave.open(converted_path, "rb")
-    if wf.getnchannels() != 1 or wf.getsampwidth() != 2 or wf.getframerate() != 16000:
-        wf.close()
-        return {'error': 'Audio file must be WAV format mono PCM.'}, 400
 
     rec = KaldiRecognizer(model, wf.getframerate())
     rec.SetWords(True)
@@ -48,4 +48,4 @@ def transcribe_audio(file_path):
     transcription += final_result_json.get('text', '')
 
     wf.close()
-    return {'transcription': transcription}, 200
+    return {'transcription': transcription}
