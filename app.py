@@ -1,27 +1,33 @@
-from vosk import Model, KaldiRecognizer
-import pyaudio
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
+from transcriber import transcribe_audio
+import uuid
 
-if not os.path.exists("model"):
-    print ("Model folder not present in the project folder!")
-    exit (1)
+app = Flask(__name__)
+CORS(app)
 
-model = Model("model")
-recognizer = KaldiRecognizer(model, 16000)
+@app.route('/', methods=['GET'])
+def home():
+    return("Hello World")
 
-mic = pyaudio.PyAudio()
-stream = mic.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=1024)
-stream.start_stream()
+@app.route('/transcribe', methods=['POST'])
+def transcribe():
 
-try:
-    while True:
-        data = stream.read(1024)
-        if recognizer.AcceptWaveform(data):
-            result = recognizer.Result()
-            print(result)
-except Exception as e:
-    print("Error:", e)
+    file = request.files['file']
 
-stream.stop_stream()
-stream.close()
-mic.terminate()
+    random_uuid = uuid.uuid4()
+    file_extension = ".webm"
+
+    file_path = str(random_uuid) + file_extension
+    file.save(file_path)
+
+    transcription_result = transcribe_audio(file_path)
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    return jsonify(transcription_result)
+
+if __name__ == '__main__':
+    app.run(debug=True)
