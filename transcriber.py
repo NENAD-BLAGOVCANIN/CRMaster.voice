@@ -13,7 +13,7 @@ AudioSegment.ffprobe ="C:\\ffmpeg\\ffmpeg\\bin\\ffprobe.exe"
 app = Flask(__name__)
 CORS(app)
 
-model = Model("/var/www/CRMaster.voice/models/vosk-model-small-en-us-0.15")
+model = Model("/var/www/CRMaster.voice/models/vosk-model-small-en-us-0.22")
 
 def convert_to_wav(file_path):
     print(f"Converting file {file_path} to compliant WAV format")
