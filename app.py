@@ -7,6 +7,8 @@ import uuid
 app = Flask(__name__)
 CORS(app)
 
+project_path = "/var/www/CRMaster.voice/"
+
 @app.route('/', methods=['GET'])
 def home():
     return("Hello World")
@@ -19,7 +21,7 @@ def transcribe():
     random_uuid = uuid.uuid4()
     file_extension = ".webm"
 
-    file_path = str(random_uuid) + file_extension
+    file_path = project_path + str(random_uuid) + file_extension
     file.save(file_path)
 
     transcription_result = transcribe_audio(file_path)
