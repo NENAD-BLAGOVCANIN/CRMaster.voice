@@ -1,4 +1,4 @@
 import sys
-sys.path.insert(0, '/var/www/CRMaster.voice)
+sys.path.insert(0, '/var/www/CRMaster.voice')
 
 from app import app as application
