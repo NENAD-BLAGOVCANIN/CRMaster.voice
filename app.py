@@ -3,9 +3,13 @@ from flask_cors import CORS
 import os
 from transcriber import transcribe_audio
 import uuid
+import logging
 
 app = Flask(__name__)
 CORS(app)
+
+logging.basicConfig(filename='/var/log/crmaster_voice.log', level=logging.INFO)
+
 
 project_path = "/var/www/CRMaster.voice/"
 
@@ -25,6 +29,8 @@ def transcribe():
     file.save(file_path)
 
     transcription_result = transcribe_audio(file_path)
+
+    logging.info(transcription_result)
 
     if os.path.exists(file_path):
         os.remove(file_path)
