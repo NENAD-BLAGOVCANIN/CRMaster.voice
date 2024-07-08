@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, Response, make_response
 from flask_cors import CORS
 import os
 from transcriber import transcribe_audio
@@ -54,10 +54,11 @@ def transcribe():
 
 @app.route('/test')
 def test():
+    response = make_response('Hello, World!')
     total_header_size = sum(len(key) + len(value) for key, value in response.headers.items())
     logging.info("Response Headers: %s", response.headers)
     logging.info("Total Header Size: %d bytes", total_header_size)
-    return 'Hello, World!'
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
