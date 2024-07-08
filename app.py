@@ -32,10 +32,17 @@ def transcribe():
 
     logging.info(transcription_result)
 
-    if os.path.exists(file_path):
+     if os.path.exists(file_path):
         os.remove(file_path)
 
-    return jsonify(transcription_result)
+    response = make_response(jsonify(transcription_result))
+    
+    # Log the headers and their total size
+    total_header_size = sum(len(key) + len(value) for key, value in response.headers.items())
+    logging.info("Response Headers: %s", response.headers)
+    logging.info("Total Header Size: %d bytes", total_header_size)
+
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
