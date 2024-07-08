@@ -20,6 +20,8 @@ def home():
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
 
+    logging.info("Starting transcription....")
+
     file = request.files['file']
 
     random_uuid = uuid.uuid4()
