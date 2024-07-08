@@ -28,9 +28,14 @@ def transcribe():
     file_path = project_path + str(random_uuid) + file_extension
     file.save(file_path)
 
-    transcription_result = transcribe_audio(file_path)
+    try:
+        transcription_result = transcribe_audio(file_path)
+    except Exception as e:
+        logging.error("Error transcribing audio: %s", str(e))
+        transcription_result = {"error": "An error occurred during transcription."}
 
-    logging.info(transcription_result)
+
+    logging.info("Transcription result: %s", transcription_result)
 
     if os.path.exists(file_path):
         os.remove(file_path)
