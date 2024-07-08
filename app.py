@@ -1,4 +1,4 @@
-from flask import Flask, request, Response, make_response
+from flask import Flask, request, Response, make_response, jsonify
 from flask_cors import CORS
 import os
 from transcriber import transcribe_audio
