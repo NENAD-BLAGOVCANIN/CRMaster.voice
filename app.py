@@ -32,11 +32,11 @@ def transcribe():
 
     logging.info(transcription_result)
 
-     if os.path.exists(file_path):
+    if os.path.exists(file_path):
         os.remove(file_path)
 
     response = make_response(jsonify(transcription_result))
-    
+
     # Log the headers and their total size
     total_header_size = sum(len(key) + len(value) for key, value in response.headers.items())
     logging.info("Response Headers: %s", response.headers)
